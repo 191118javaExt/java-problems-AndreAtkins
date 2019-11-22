@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +16,25 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String reverse(String string) {
+		String[] s = string.split("");
 		
-		return "";
+		String[] array = new String[s.length];
+		
+		int count = 0;
+		
+			for(int i = s.length-1; i >=0; i--) {
+			
+			
+				array[count] = s[i];
+		
+				count++;			
+			
+			}
+		
+		
+		
+		return String.join("", array);
+			
 	}
 
 	/**
@@ -27,8 +46,33 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		
+		char[] splitString = phrase.toCharArray();
+		
+		String acro = "";
+		
+		if(phrase.isEmpty()) {
+			
+			return "";
+			
+		}
+		
+		if(Character.isLetter(splitString[0])) {
+			acro += splitString[0];
+		
+			
+		for(int i=1; i < splitString.length; i++) {
+			if(!Character.isLetter(splitString[i-1]) && Character.isLetter(splitString[i])){
+				acro += splitString[i];
+				
+			}
+		}	
+			
+		}
+		return acro.toUpperCase();	
+		
+		
+		
 	}
 
 	/**
@@ -81,17 +125,49 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+		
+			
+			double one = getSideOne();
+			double two = getSideTwo();
+			double three = getSideThree();
+			
+			if(one == two && two == three) {
+				
+				return true;
+			}
+			   return false;
 		}
 
+	
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
+			
+			double one = getSideOne();
+			double two = getSideTwo();
+			double three = getSideThree();
+			
+			if(this.isEquilateral()) {
+				return true;			
+			}
+			
+			if(one == two || two == three || one == three) {
+				return true;
+				
+			}
+			
 			return false;
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
+			
+			double one = getSideOne();
+			double two = getSideTwo();
+			double three = getSideThree();
+					
+			
+			if(one != two || two != three || one != three) {
+				return true;
+				
+			}
 			return false;
 		}
 
@@ -113,8 +189,48 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		
+				 
+		 int score = 0; // declare and initialize score
+		 
+		
+	    Map<String,Integer > hm = new HashMap<String,Integer>(); //declare and initialize map
+	    
+	    hm.put("A", 1);        //implemented applicable key and value pairs using put function
+	    hm.put("E", 1);
+	    hm.put("I", 1);
+	    hm.put("O", 1);
+	    hm.put("U", 1);
+	    hm.put("L", 1);
+	    hm.put("N", 1);
+	    hm.put("R", 1);
+	    hm.put("S", 1);
+	    hm.put("T", 1);
+	    hm.put("D", 2);
+	    hm.put("G", 2);
+	    hm.put("C", 3);
+	    hm.put("M", 3);
+	    hm.put("P", 3);
+	    hm.put("F", 4);
+	    hm.put("H", 4);
+	    hm.put("V", 4);
+	    hm.put("W", 4);
+	    hm.put("Y", 4);
+	    hm.put("K", 5);
+	    hm.put("J", 8);
+	    hm.put("X", 8);
+	    hm.put("Q", 10);
+	    hm.put("Z", 10);
+	    
+	    
+	 String[]  array = string.split("");  //declared array and assigned it split strings at every character
+	 for(int i = 0; i < array.length; i++) { //used for loop to iterate each character in string
+		 score += hm.get(array[i]); // used get function to add designate value for each character
+	   }
+	    
+	 
+		
+		return score; //outputs total score
 	}
 
 	/**
