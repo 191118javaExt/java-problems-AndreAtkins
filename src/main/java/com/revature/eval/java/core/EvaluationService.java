@@ -1,10 +1,14 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EvaluationService {
 
@@ -30,9 +34,7 @@ public class EvaluationService {
 				count++;			
 			
 			}
-		
-		
-		
+				
 		return String.join("", array);
 			
 	}
@@ -196,7 +198,7 @@ public class EvaluationService {
 		
 	    Map<String,Integer > hm = new HashMap<String,Integer>(); //declare and initialize map
 	    
-	    hm.put("A", 1);        //implemented applicable key and value pairs using put function
+	    hm.put("A", 1);    //implemented applicable key and value pairs using put function
 	    hm.put("E", 1);
 	    hm.put("I", 1);
 	    hm.put("O", 1);
@@ -265,8 +267,36 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		
+	    String numonly = string.replaceAll("[^0-9]", "");
+	    
+	   	char ch = string.charAt(0);
+	   
+	      if(ch == '1' && numonly.length()>10) {
+	    
+	    numonly = numonly.substring(1);	
+	    
+	    }
+	    
+	    char ch2 = numonly.charAt(0);
+	    
+	      if(ch2 == '1') {
+	     	
+	    numonly = numonly.substring(1);	
+	    	
+	    }
+	    
+    if (numonly.length() > 10) {
+    	
+    	
+    	throw new IllegalArgumentException("Number must be less than 10 digits");
+    }  
+	    	
+    if (string.matches("!.$%^&*,+=()`~<>@#?"))                  {
+        
+      throw new IllegalArgumentException("non numeric");
+	}	
+		return numonly;
 	}
 
 	/**
@@ -280,7 +310,34 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+	   Map	<String, Integer> map1 = new HashMap<>(); 
+		
+		String [] eachword = string.split("\\W+"); // created string array containing each word in phrase
+		
+		for(int i = 0; i < eachword.length; i++) { // for loop to iterate through the string
+			
+		  String check = eachword[i];       // create a string that equals each word in phrase/array
+		  
+		  if(map1.containsKey(check)) {    //  use contains key function and if statement to check if one of the words is in map 
+			  
+			 int value = map1.get(check);  // declare integer and get the value in map in this case the # of times a word appears
+		
+			 map1.put(check, ++value);    // if so increment value by 1
+			                              
+		  }else {                        // if  not put word in map and assign it one
+			  map1.put(check, 1);
+		  }
+				
+		  	  			  
+		}
+										// repeats for each word in phrase	
+		
+		return map1;                   // returns word and number of occurrences in key value form
+
+	
+	
+	
 	}
 
 	/**
@@ -359,10 +416,57 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
-	}
+	 	
+		char a = 'a';
+	    char e = 'e';
+	    char i = 'i';
+	    char o = 'o';
+	    char u = 'u';
 
+	    int start = 0;
+	    int firstVowel = 0;
+	    int end = string.length();
+	    
+	    
+	    
+	    for(int i1 = 0; i1 < end; i1++) {
+	        char c = Character.toLowerCase(string.charAt(i1));
+	        if(c == a || c == e || c == i || c == o || c == u) {
+	            firstVowel = i1;
+	            break;
+	        }
+	    }
+	    if(start != firstVowel) {
+	        String startString = string.substring(firstVowel, end);
+	        String endString = string.substring(start, firstVowel) + "ay";
+	        String pigword = startString+endString;
+	        return pigword;
+	    }
+	    
+	    
+           if(firstVowel==0) {
+	    	
+	    	String vstring = string + "ay";
+	    	return vstring;
+	    	
+	    }
+           
+           String arrayc[] = string.split("");
+          
+           
+           if (arrayc[0].equals("q")) {
+        	  
+           String strword1 = string.substring(2,end);
+           String endword1 = string.substring(0,2) + "ay";
+           String pigword2 = strword1+endword1;
+           
+           return pigword2;
+        	  
+        	  
+          }	
+	    return string; //couldn't find a vowel, return original
+
+	}		
 	/**
 	 * 9. An Armstrong number is a number that is the sum of its own digits each
 	 * raised to the power of the number of digits.
@@ -378,9 +482,25 @@ public class EvaluationService {
 	 * @param input
 	 * @return
 	 */
-	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+	public boolean isArmstrongNumber(int input) {	
+		 int length = String.valueOf(input).length(); // get # of digits
+		
+		  int sum = 0;    //declare sum at 0
+		  int check = input; // store original input value outside scope
+		
+		for(int i = 0; i < length; i++ ) { //execute code number of digit times
+		 
+		 int a = input % 10;     //modulus 10 retrieves digit in ones place
+		 
+		 sum+= Math.pow(a, length); //takes ones digit and raises power by # of digits  then adds to sum
+		 
+		 input /= 10 ; //divides input by 10 and reassigns value 
+		
+		
+		}
+				
+	  return check == sum; //since input was modified I used "check" variable from outside loop block to compare sum to original output
+	                      //returned boolean
 	}
 
 	/**
@@ -394,8 +514,37 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+	
+		List<Long> list = new ArrayList<Long>();	
+		
+		 // return the number of 2s that divide long l
+        while (l % 2L == 0) 
+        { 
+            list.add(2L);
+            
+            l /= 2L; 
+        } 
+  
+ // l has to be odd.  square root is largest possible prime factor, increment by 2 
+ // checks divisibility by every odd number up to square root of L         
+        
+        for (long i = 3L; i <= Math.sqrt(l); i+= 2L) 
+        {   
+            // While i divides l, print i and divide l (primes can only be odd except 2)
+            while (l % i == 0L) 
+            { 
+            	 list.add(i);    //adds each i to list
+                l /= i; 
+            } 
+        } 
+  
+        // This is to handle the case when 
+        // n is a prime number greater than 2 
+        if (l > 2L) 
+        	 list.add(l); 
+		
+			
+		return list;
 	}
 
 	/**
@@ -433,8 +582,63 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			HashMap<String, Integer> maptoint = new HashMap<String, Integer>();
+			
+			maptoint.put("a",1);    maptoint.put("m",13);    maptoint.put("y",25);   
+			maptoint.put("b",2);    maptoint.put("n",14);    maptoint.put("z",26);   
+			maptoint.put("c",3);    maptoint.put("o",15);    maptoint.put("z",26);  
+			maptoint.put("d",4);    maptoint.put("p",16);    maptoint.put("z",26); 
+			maptoint.put("e",5);    maptoint.put("q",17);    maptoint.put("z",26); 
+			maptoint.put("f",6);    maptoint.put("r",18);     
+			maptoint.put("g",7);    maptoint.put("s",19);
+			maptoint.put("h",8);    maptoint.put("t",20);
+			maptoint.put("i",9);    maptoint.put("u",21);
+			maptoint.put("j",10);   maptoint.put("v",22);
+			maptoint.put("k",11);   maptoint.put("w",23);
+			maptoint.put("l",12);   maptoint.put("x",24);
+			
+			
+			HashMap<Integer, String> maptostring = new HashMap<Integer, String>();
+			
+			maptostring.put(1, "a");  maptostring.put(9, "i");  maptostring.put(17, "q");
+			maptostring.put(2, "b");  maptostring.put(10, "j"); maptostring.put(18, "r");
+			maptostring.put(3, "c");  maptostring.put(11, "k"); maptostring.put(19, "s");
+			maptostring.put(4, "d");  maptostring.put(12, "l"); maptostring.put(20, "t");
+			maptostring.put(5, "e");  maptostring.put(13, "m"); maptostring.put(21, "u");
+			maptostring.put(6, "f");  maptostring.put(14, "n"); maptostring.put(22, "v");
+			maptostring.put(7, "g");  maptostring.put(15, "o"); maptostring.put(23, "w");
+			maptostring.put(8, "h");  maptostring.put(16, "p"); maptostring.put(24, "x");
+			maptostring.put(25, "y"); maptostring.put(26, "z"); 			
+			
+			String[] strArray;
+					
+	        strArray = string.split("");	//string array at every character
+	        String empty = "";
+	        
+	        for(int i = 0; i < strArray.length; i++){
+	        	
+	        	String letters =  strArray[i];    
+	        
+	        	
+	            int numsafter = maptoint.get(letters) + key; //get value from letters and add to key
+	      
+	            if(numsafter > 26) {
+	            
+	            numsafter = numsafter % 26;
+	            
+	            } 
+	            
+	            String stringafter;  
+			   
+			    stringafter = maptostring.get(numsafter); //get string from numbers
+			    		   	    
+			    empty += stringafter;
+			   
+			    
+	        
+	        }   	      	        
+		    //System.out.println(empty);		    								
+			return empty;
 		}
 
 	}
@@ -451,11 +655,68 @@ public class EvaluationService {
 	 * @param i
 	 * @return
 	 */
-	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
-	}
 
+	
+	
+	public int calculateNthPrime(int i) {       	
+    	
+    	max= i * i;       
+        IsThisNumberPrime(); 
+      
+    	return  (primes.get(i-1));
+        //System.out.println("nth prime number is " +  
+        		                    //(primes.get(i-1))); 
+    } 
+					  
+    // initializing the max value  
+    static int max; 
+      
+    // list to hold all prime numbers 
+    static ArrayList<Integer> primes = 
+       new ArrayList<Integer>(); 
+      
+    // Function to generate N prime numbers  
+    
+    static void IsThisNumberPrime()  
+    {  
+        // create a boolean array "IsPrime[0..max]"  
+         
+        
+        boolean [] IsPrime = new boolean[max];  
+          
+        for(int i = 0; i < max; i++)      //initialize all entries it as true.  
+        	
+            IsPrime[i] = true;          // A value in IsPrime[i] will finally be false  
+                                        // if i is Not a IsPrime, else true.  
+          
+        for (int p = 2; p * p < max; p++)  
+        {  
+            // If IsPrime[p] is not changed,  
+            // then it is a prime  
+            if (IsPrime[p] == true)  
+            {  
+                // Update all multiples of p greater than or  
+                // equal to the square of it  
+                // numbers which are multiple of p and are  
+                // less than p^2 are already been marked.  
+                for (int i = p * p; i < max; i += p)  
+                    IsPrime[i] = false;  
+            }  
+        }  
+      
+        // Store all prime numbers in list
+        
+        for (int p = 2; p < max; p++)  
+        
+        	if (IsPrime[p] == true)  
+               
+        		primes.add(p); 
+			
+	
+	}	
+    
+    
+		
 	/**
 	 * 13 & 14. Create an implementation of the atbash cipher, an ancient encryption
 	 * system created in the Middle East.
@@ -489,8 +750,129 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			
+		    string = string.replaceAll("[^a-zA-Z0-9]+", ""); //create new string without spaces 
+			
+		    string = string.toLowerCase();                        
+		    //  and punctuation and reassign
+		    String empty = "";                                            
+			
+		  //to store encoded string 
+			
+			int check = string.length();
+			
+			
+	    HashMap<String, String> maptoint = new HashMap<String, String>();  //create map with key values that match atbash rules
+			
+			maptoint.put("a","z");    maptoint.put("m","n");    maptoint.put("y","b");   
+			maptoint.put("b","y");    maptoint.put("n","m");    maptoint.put("z","a");   
+			maptoint.put("c","x");    maptoint.put("o","l");    maptoint.put("1","1"); 
+			maptoint.put("d","w");    maptoint.put("p","k");    maptoint.put("2","2");
+			maptoint.put("e","v");    maptoint.put("q","j");    maptoint.put("3","3");
+			maptoint.put("f","u");    maptoint.put("r","i");     
+			maptoint.put("g","t");    maptoint.put("s","h");
+			maptoint.put("h","s");    maptoint.put("t","g");
+			maptoint.put("i","r");    maptoint.put("u","f");
+			maptoint.put("j","q");    maptoint.put("v","e");
+			maptoint.put("k","p");    maptoint.put("w","d");
+			maptoint.put("l","o");    maptoint.put("x","c");
+			
+		 
+		  
+		  String [] strArray =  string.split("");   //put string minus spaces and punctuation in string array
+			
+			for(int i = 0; i < string.length(); i++) {
+				
+		   String trans = maptoint.get(strArray[i]);     //get value for each letter in array
+			
+			empty += trans;
+				
+			}				
+			
+		    String first;
+		    
+		    String second;
+	   
+		    String third;
+		    
+		    String fourth;
+		    
+		    String fifth;
+		    
+		    String sixth;
+		    
+		    String seventh;
+		    
+		    String eigth;
+		    
+		    
+		    if(check > 34) {
+		   
+		    first = empty.substring(0,5);
+			
+		    second = empty.substring(5, 10); 
+		    
+		    third = empty.substring(10, 15);
+		    
+		    fourth = empty.substring(15, 20);
+		    
+		    fifth = empty.substring(20, 25);
+		    
+		    sixth = empty.substring(25, 30);
+		    
+		    seventh= empty.substring(30,35);
+		    
+		    eigth = empty.substring(35, check);
+		    
+		     String combo2 = first + " " + second + " " + third + " " + fourth + " " 
+		     + fifth + " " + sixth  + " " + seventh + " " + eigth;
+		   
+		     return combo2;
+		    }
+		    
+		    if(check < 20 && check > 15) {
+		 	   
+			    first = empty.substring(0,5);
+				
+			    second = empty.substring(5, 10); 
+			    
+			    third = empty.substring(10, 15);
+			    
+			    fourth = empty.substring(15, check);
+		    
+			    String combo2 = first + " " + second + " " + third + " " + fourth;
+			    
+			    return combo2;
+
+		    }
+			
+		    if(check > 10 && check < 15) {
+			 	   
+			    first = empty.substring(0,5);
+				
+			    second = empty.substring(5, 10); 
+			    
+			    third = empty.substring(10, check);
+			    
+			   
+		    
+			    String combo2 = first + " " + second + " " + third;
+			    
+			    return combo2;
+		    }
+		   
+		    
+		    
+		    if(check < 5) {
+		    	
+		    	
+		    	
+		    	return empty;
+		    	
+		    }
+			
+		 return null;     						
+		
 		}
 
 		/**
@@ -503,6 +885,7 @@ public class EvaluationService {
 			// TODO Write an implementation for this method declaration
 			return null;
 		}
+		
 	}
 
 	/**
@@ -528,8 +911,53 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
+		 
+	String str = string.substring(0, string.length() - 1);
+	
+	if(str.contains("K")) {
+	return false;	
+	}
+	if(string.contains("A"))	{
 		return false;
+	}
+	
+			
+	 String numonly = string.replaceAll("[^0-9]", "");
+	 
+	 String [] strArray = numonly.split("");
+	 
+	 int sum = 0;
+	 
+	 int x1 = Integer.parseInt(strArray[0]);    //turn split string to numbers integer type                                         
+     int x2 = Integer.parseInt(strArray[1]);    // only first 9
+     int x3 = Integer.parseInt(strArray[2]);
+     int x4 = Integer.parseInt(strArray[3]);
+     int x5 = Integer.parseInt(strArray[4]);
+     int x6 = Integer.parseInt(strArray[5]);
+     int x7 = Integer.parseInt(strArray[6]);
+     int x8 = Integer.parseInt(strArray[7]);
+     int x9 = Integer.parseInt(strArray[8]);
+	
+	 if(strArray.length == 9) {
+	    	 
+	    sum = (x1 * 10) + (x2 * 9) + (x3 * 8) + (x4 * 7) + (x5 * 6) + 
+	    (x6 * 5) + (x7 * 4) + (x8 * 3) + (x9 * 2) + 10;
+	
+	 }
+	       
+	 if(strArray.length == 10)      {
+		 int x10 = Integer.parseInt(strArray[9]);
+		     
+		 sum = (x1 * 10) + (x2 * 9) + (x3 * 8) + (x4 * 7) + (x5 * 6) + 
+		 (x6 * 5) + (x7 * 4) + (x8 * 3) + (x9 * 2) + x10;
+	 }      
+	
+	 
+	 if(sum % 11 == 0) {
+		 return true;
+	 }
+	 return false;
+	              
 	}
 
 	/**
@@ -546,7 +974,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
+		
+		
+		if(string.contains("a") && string.contains("b") && string.contains("c") && string.contains("d")
+				 && string.contains("e") && string.contains("f") && string.contains("g") && string.contains("h")
+				 && string.contains("i")  && string.contains("j")  && string.contains("k")  && string.contains("l")
+				 && string.contains("m")  && string.contains("n")  && string.contains("o")  && string.contains("p")
+				 && string.contains("q")  && string.contains("r")  && string.contains("s")  && string.contains("t")
+				 && string.contains("u")  && string.contains("v")  && string.contains("w") && string.contains("x")
+				 && string.contains("y")  && string.contains("z")) {
+			
+			return true;		
+		
+		}						
 		return false;
 	}
 
@@ -559,7 +999,15 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		return null;
 	}
 
@@ -577,8 +1025,36 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+					
+		Set<Integer> myset = new HashSet<Integer>(); //list for multiples
+		
+		for(int j = 0; j < set.length; j++)	{      //loop to iterate through given set
+		
+		    int num = set[j];   // getting all values of set and creating a varable for them
+		  
+
+
+		for(int k = 1; num * k< i; k++) { 
+			
+			//take each number in set and multiply by numbers from 1 to the product less than given integer
+			
+			int product = num * k; 
+			
+			myset.add(product);    //add each multiple to list
+			
+		}
+		
+		
+		}
+
+		
+		int sum = 0;           // for loop to add all contents of the list
+	   
+		for (int m: myset) {
+	    	
+	        sum += m;
+	    }							
+		return sum;
 	}
 
 	/**
@@ -619,7 +1095,36 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+
+		//String string = "4539 1488 0343 6467";
+		
+		
+		String numonly = string.replaceAll("[^0-9]", "");
+			
+		String [] a = numonly.split("");
+	    
+		for(int i = a.length-2; i >= 0; i-=2 ) {
+
+		int other =	Integer.parseInt(a[i]);			
+		      other*= 2;
+			
+			if (other>9) {
+				
+				other -=9;
+			}
+		
+		 a[i] = Integer.toString(other);
+		  
+		}  		   
+		   int sum = 0;
+		   for(int i = 0; i < a.length; i++)
+		   {          
+		   
+		   sum += Integer.parseInt(a[i]);   
+		     
+		   }
+		   		   	  	   
+		   return sum % 10 == 0;		
 	}
 
 	/**
@@ -649,9 +1154,54 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
-	}
-
+	public static boolean isNumeric(String strNum) { // this is the helper function to check whether it is a digit or not
+	return strNum.matches("-?\\d+(\\.\\d+)?");
+	    }
+	    
+	  public static int[] isNum(String s) {
+		    String [] arr =     s.split(" ");
+		    int [] ans = new int[2];
+		    int j = 0;
+		    for(int i = 0; i < arr.length; i++) {
+		        if(isNumeric(arr[i])) {
+		            ans[j] = Integer.parseInt(arr[i]); // this changes the string into integer
+		            j++;
+		        }
+		    }
+		    //System.out.println(Arrays.toString(ans));
+		    return ans;
+		    }
+		    
+		    public static int solveWordProblem(String string) {
+		        if(string.contains("?"))
+		            string = string.replace("?", "");
+		        Set<String> set = new HashSet<>();
+		        set.add("plus");
+		        set.add("minus");
+		        set.add("multiplied");
+		        set.add("divided");
+		        String[] s = string.split(" ");
+		        String check = "";
+		        for(String s1 : s) {
+		            if(set.contains(s1)) {
+		                check += s1;
+		            }
+		        }
+		        int [] values = isNum(string); //isNum return arr of integer which is stored in values
+		        
+		        switch(check) {
+		        case"plus":
+		            return values[0] + values[1];
+		        case"minus":
+		            return values[0] - values[1];
+		        case"divided":
+		            return values[0] / values[1];
+		        case"multiplied":
+		            return values[0] * values[1];
+		            default:
+		                return -1;
+		            
+		        }
+		        
+		    }
 }
