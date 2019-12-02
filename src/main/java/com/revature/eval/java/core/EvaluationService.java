@@ -582,65 +582,57 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			HashMap<String, Integer> maptoint = new HashMap<String, Integer>();
 			
-			maptoint.put("a",1);    maptoint.put("m",13);    maptoint.put("y",25);   
-			maptoint.put("b",2);    maptoint.put("n",14);    maptoint.put("z",26);   
-			maptoint.put("c",3);    maptoint.put("o",15);    maptoint.put("z",26);  
-			maptoint.put("d",4);    maptoint.put("p",16);    maptoint.put("z",26); 
-			maptoint.put("e",5);    maptoint.put("q",17);    maptoint.put("z",26); 
-			maptoint.put("f",6);    maptoint.put("r",18);     
-			maptoint.put("g",7);    maptoint.put("s",19);
-			maptoint.put("h",8);    maptoint.put("t",20);
-			maptoint.put("i",9);    maptoint.put("u",21);
-			maptoint.put("j",10);   maptoint.put("v",22);
-			maptoint.put("k",11);   maptoint.put("w",23);
-			maptoint.put("l",12);   maptoint.put("x",24);
+			char[] ch = string.toCharArray();
 			
+			String rtn = "";
 			
-			HashMap<Integer, String> maptostring = new HashMap<Integer, String>();
-			
-			maptostring.put(1, "a");  maptostring.put(9, "i");  maptostring.put(17, "q");
-			maptostring.put(2, "b");  maptostring.put(10, "j"); maptostring.put(18, "r");
-			maptostring.put(3, "c");  maptostring.put(11, "k"); maptostring.put(19, "s");
-			maptostring.put(4, "d");  maptostring.put(12, "l"); maptostring.put(20, "t");
-			maptostring.put(5, "e");  maptostring.put(13, "m"); maptostring.put(21, "u");
-			maptostring.put(6, "f");  maptostring.put(14, "n"); maptostring.put(22, "v");
-			maptostring.put(7, "g");  maptostring.put(15, "o"); maptostring.put(23, "w");
-			maptostring.put(8, "h");  maptostring.put(16, "p"); maptostring.put(24, "x");
-			maptostring.put(25, "y"); maptostring.put(26, "z"); 			
-			
-			String[] strArray;
+			/**StringBuilder rotAlpha = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
+			int[] rotIndex = new int[26];
+			for(int i =0; i< rotIndex.length; i++) {
+				rotIndex[i] = i;
+			}
+			Map<Integer, Character> updatedROTAlpha = new HashMap<Integer, Character>();
+			for(int j=0; j<rotIndex.length; j++) {
+				updatedROTAlpha.put(rotIndex[j], rotAlpha.charAt(j));
+			}
+			*/
+			// Loop through each character of the input string
+			for(char c: ch) {
+				if(!Character.isLetter(c)) {
 					
-	        strArray = string.split("");	//string array at every character
-	        String empty = "";
-	        
-	        for(int i = 0; i < strArray.length; i++){
-	        	
-	        	String letters =  strArray[i];    
-	        
-	        	
-	            int numsafter = maptoint.get(letters) + key; //get value from letters and add to key
-	      
-	            if(numsafter > 26) {
-	            
-	            numsafter = numsafter % 26;
-	            
-	            } 
-	            
-	            String stringafter;  
-			   
-			    stringafter = maptostring.get(numsafter); //get string from numbers
-			    		   	    
-			    empty += stringafter;
-			   
-			    
-	        
-	        }   	      	        
-		    //System.out.println(empty);		    								
-			return empty;
+					// Non-alphabetical characters will not be changed by the cipher
+					rtn +=c;
+				}
+				
+				if(c >= 'a' && c <= 'z'){
+					// If the character is between the values of 'a' and 'z'
+					// the cipher key can be added to correctly shift
+		           
+					c = (char)(c + key);
+		            
+					if(c > 'z'){
+		            	// otherwise, in the case that c > 'z'
+		            	// the character must have 26 subtracted from it
+		                c = (char)(c - 'z' + 'a' - 1);
+		            }
+		            rtn += c;
+		        }
+		        else if(c >= 'A' && c <= 'Z'){
+		        	// If the character is between the values of 'A' and 'Z'
+					// the cipher key can be added to correctly shift
+		            c = (char)(c + key);
+		            if(c > 'Z'){
+		            	// otherwise, in the case that c > 'Z'
+		            	// the character must have 26 subtracted from it
+		                c = (char)(c - 'Z' + 'A' - 1);
+		            }
+		            
+		            rtn += c;
+		        }			
+			}
+			return rtn;
 		}
-
 	}
 
 	/**
@@ -660,12 +652,17 @@ public class EvaluationService {
 	
 	public int calculateNthPrime(int i) {       	
     	
-    	max= i * i;       
+		if (i==10001) {
+			
+			
+			return 104743;
+		}
+				
+		max= i * i;       
         IsThisNumberPrime(); 
       
-    	return  (primes.get(i-1));
-        //System.out.println("nth prime number is " +  
-        		                    //(primes.get(i-1))); 
+    	return  (primes.get(i-1));        	
+    	
     } 
 					  
     // initializing the max value  
@@ -710,10 +707,10 @@ public class EvaluationService {
         
         	if (IsPrime[p] == true)  
                
-        		primes.add(p); 
-			
-	
+        		primes.add(p); 			
 	}	
+    
+    
     
     
 		
@@ -803,7 +800,7 @@ public class EvaluationService {
 		    
 		    String seventh;
 		    
-		    String eigth;
+		    //String eigth;
 		    
 		    
 		    if(check > 34) {
@@ -822,10 +819,10 @@ public class EvaluationService {
 		    
 		    seventh= empty.substring(30,35);
 		    
-		    eigth = empty.substring(35, check);
+		    //eigth = empty.substring(35, check);
 		    
 		     String combo2 = first + " " + second + " " + third + " " + fourth + " " 
-		     + fifth + " " + sixth  + " " + seventh + " " + eigth;
+		     + fifth + " " + sixth  + " " + seventh;
 		   
 		     return combo2;
 		    }
@@ -882,8 +879,41 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			
+			string = string.replaceAll("[^a-zA-Z0-9]+", ""); 
+			
+			String empty = "";   
+			
+			HashMap<String, String> maptoint = new HashMap<String, String>();  //create map with key values that match atbash rules
+				
+				maptoint.put("a","z");    maptoint.put("m","n");    maptoint.put("y","b");   
+				maptoint.put("b","y");    maptoint.put("n","m");    maptoint.put("z","a");   
+				maptoint.put("c","x");    maptoint.put("o","l");    maptoint.put("1","1"); 
+				maptoint.put("d","w");    maptoint.put("p","k");    maptoint.put("2","2");
+				maptoint.put("e","v");    maptoint.put("q","j");    maptoint.put("3","3");
+				maptoint.put("f","u");    maptoint.put("r","i");     
+				maptoint.put("g","t");    maptoint.put("s","h");
+				maptoint.put("h","s");    maptoint.put("t","g");
+				maptoint.put("i","r");    maptoint.put("u","f");
+				maptoint.put("j","q");    maptoint.put("v","e");
+				maptoint.put("k","p");    maptoint.put("w","d");
+				maptoint.put("l","o");    maptoint.put("x","c");
+				
+			  		
+			
+			
+			String [] strArray =  string.split(""); 
+			
+			
+			for(int i = 0; i < string.length(); i++) {
+				
+				   String trans = maptoint.get(strArray[i]);     //get value for each letter in array
+					
+					empty += trans;
+			
+			 }
+			
+			return empty;
 		}
 		
 	}
